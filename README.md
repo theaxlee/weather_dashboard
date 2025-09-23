@@ -42,7 +42,6 @@ A Django web app to view current, forecast, and historical weather data using We
    - **Apply the secret key in your Django settings:**
      In `weather_project/settings.py`, load the secret key from the environment:
      ```python
-     import os
      SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
      ```
 
@@ -61,7 +60,6 @@ A Django web app to view current, forecast, and historical weather data using We
 
 ## Notes
 - You need a free API key from [WeatherAPI.com](https://www.weatherapi.com/).
-- Keep your Django secret key private and never commit it to version control.
 
 ## License
 
