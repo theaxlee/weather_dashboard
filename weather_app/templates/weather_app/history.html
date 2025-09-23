@@ -1,0 +1,148 @@
+{% extends 'weather_app/base.html' %}
+
+{% block title %}Weather History - {{ location }}{% endblock %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'weather_app/css/history.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <div class="history-header">
+        <h2>Weather History</h2>
+        <div class="search-form">
+            <form id="history-form" action="{% url 'history' %}" method="get" onsubmit="return validateForm()">
+                <input type="text" name="location" id="location" placeholder="Enter location..." value="{{ location }}" required>
+                <input type="date" name="date" id="date" value="{{ date|date:'Y-m-d' }}" required>
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
+            <div id="error-message" class="error-message" style="display: none; color: #dc3545; margin-top: 0.5rem;"></div>
+        </div>
+    </div>
+    
+    {% if not date %}
+        <div class="instructions">
+            <p>Please select both a date and location to view historical weather data.</p>
+        </div>
+    {% elif error %}
+        <div class="error-message">
+            <p>{{ error }}</p>
+        </div>
+    {% elif history_data %}
+        <div class="history-data">
+            <div class="day-summary">
+                <h3>{{ history_data.forecast.forecastday.0.date|date:"l, F d, Y" }}</h3>
+                <div class="summary-content">
+                    <div class="summary-icon">
+                        <img src="{{ history_data.forecast.forecastday.0.day.condition.icon }}" alt="{{ history_data.forecast.forecastday.0.day.condition.text }}">
+                        <p>{{ history_data.forecast.forecastday.0.day.condition.text }}</p>
+                    </div>
+                    <div class="summary-temps">
+                        <div class="temp-item">
+                            <i class="fas fa-temperature-high"></i>
+                            <p>Max: {{ history_data.forecast.forecastday.0.day.maxtemp_c }}&deg;C</p>
+                        </div>
+                        <div class="temp-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <p>Min: {{ history_data.forecast.forecastday.0.day.mintemp_c }}&deg;C</p>
+                        </div>
+                        <div class="temp-item">
+                            <i class="fas fa-temperature-half"></i>
+                            <p>Avg: {{ history_data.forecast.forecastday.0.day.avgtemp_c }}&deg;C</p>
+                        </div>
+                    </div>
+                    <div class="summary-details">
+                        <div class="detail-item">
+                            <i class="fas fa-umbrella"></i>
+                            <p>Total Precipitation</p>
+                            <p>{{ history_data.forecast.forecastday.0.day.totalprecip_mm }} mm</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <p>Max Wind</p>
+                            <p>{{ history_data.forecast.forecastday.0.day.maxwind_kph }} km/h</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tint"></i>
+                            <p>Avg Humidity</p>
+                            <p>{{ history_data.forecast.forecastday.0.day.avghumidity }}%</p>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-sun"></i>
+                            <p>UV Index</p>
+                            <p>{{ history_data.forecast.forecastday.0.day.uv }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hourly-history">
+                <h3>Hourly Data</h3>
+                {% if history_data.forecast.forecastday.0.hour %}
+                <div class="hourly-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Condition</th>
+                                <th>Temp (&deg;C)</th>
+                                <th>Feels Like (&deg;C)</th>
+                                <th>Wind (km/h)</th>
+                                <th>Humidity (%)</th>
+                                <th>Precipitation (mm)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hour in history_data.forecast.forecastday.0.hour %}
+                            <tr>
+                                <td>{{ hour.time|slice:"-5:" }}</td>
+                                <td>
+                                    <img src="{{ hour.condition.icon }}" alt="{{ hour.condition.text }}" class="small-icon">
+                                    {{ hour.condition.text }}
+                                </td>
+                                <td>{{ hour.temp_c }}</td>
+                                <td>{{ hour.feelslike_c }}</td>
+                                <td>{{ hour.wind_kph }} {{ hour.wind_dir }}</td>
+                                <td>{{ hour.humidity }}</td>
+                                <td>{{ hour.precip_mm }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="no-data-message">
+                    <p>No hourly data available for this date.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="history-data-json" style="display: none;">
+            {{ history_data|safe }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'weather_app/js/history.js' %}"></script>
+<script>
+function validateForm() {
+    const location = document.getElementById('location').value;
+    const date = document.getElementById('date').value;
+    const errorDiv = document.getElementById('error-message');
+    
+    if (!location || !date) {
+        errorDiv.style.display = 'block';
+        errorDiv.textContent = 'Please enter both location and date';
+        return false;
+    }
+    
+    errorDiv.style.display = 'none';
+    return true;
+}
+</script>
+{% endblock %}

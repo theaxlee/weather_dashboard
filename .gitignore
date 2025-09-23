@@ -1,0 +1,22 @@
+# env files
+.env
+.env.*
+*.log
+
+# python
+*.pyc
+__pycache__/
+db.sqlite3
+
+# Environment files
+.env
+.env.*
+
+# Logs
+*.log
+
+# Static and media files
+/media/
+
+# Virtual environment
+venv/
