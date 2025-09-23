@@ -1,7 +1,9 @@
 # Weather Dashboard
 
 A Django web app to view current, forecast, and historical weather data using WeatherAPI.com.
-
+ 
+![forecast.png](https://github.com/Madpsych0/weather_dashboard/blob/main/forecast.png)
+![forecast.png](https://github.com/Madpsych0/weather_dashboard/blob/main/history.png)
 ## Features
 
 - Search current weather by location
