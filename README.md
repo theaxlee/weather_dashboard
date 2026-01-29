@@ -16,7 +16,7 @@ A Django web app to view current, forecast, and historical weather data using We
 ## 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Madpsych0/weather_dashboard
 cd weather-dashboard
 ```
 
