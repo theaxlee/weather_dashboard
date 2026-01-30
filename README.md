@@ -13,27 +13,27 @@ A Django web app to view current, forecast, and historical weather data using We
 
 ## Setup
 
-## 1. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Madpsych0/weather_dashboard
 cd weather-dashboard
 ```
 
-## 2. Create & Activate Virtual Environment
+### 2. Create & Activate Virtual Environment
 
-### Windows
+#### Windows
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
-### macOS / Linux
+#### macOS / Linux
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-## 3. Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -52,24 +52,25 @@ DJANGO_SECRET_KEY=your_secret_key_here
 - **WEATHER_API_KEY** → Obtain from your weather API provider.
 - **DJANGO_SECRET_KEY** → Generate a long random string (at least 32 characters).
 
-## 5. Apply Database Migrations
+### 5. Apply Database Migrations
 
 ```bash
 python manage.py migrate
 ```
 
-## 6. Run the Development Server
+### 6. Run the Development Server
 
 ```bash
 python manage.py runserver
 ```
 
 ## Notes
-
-- Ensure Python 3.10+ is installed.
-
-## Notes
 - You need a free API key from [WeatherAPI.com](https://www.weatherapi.com/).
+
+## Authors
+
+- [@Madpsycho](https://www.github.com/Madpsych0)
+- [@theaxlee](https://www.github.com/theaxlee)
 
 ## License
 
